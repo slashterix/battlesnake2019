@@ -33,12 +33,14 @@ class MoveRequest(object):
             if not move_coord.isValid():
                 print("X: {} Y:{} is out of bounds".format(move_coord.x,move_coord.y))
                 directions.remove(direction)
+                continue
 
 
             # Avoid snake tails
             if isinstance(board.gridCoord(move_coord).obj, Snake):
                 print("Unsafe move {} {} ".format(direction,board.gridCoord(move_coord)))
                 directions.remove(direction)
+                continue
 
         pprint(directions)
         if directions:
