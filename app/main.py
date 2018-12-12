@@ -1,10 +1,13 @@
 import bottle
 import os
-import random
 import sys
+
+# Debugger
+import pdb
 
 from api import *
 from pprint import pprint
+from battlesnake import *
 
 @bottle.route('/')
 def static():
@@ -29,9 +32,10 @@ def start():
 
 @bottle.post('/move')
 def move():
-    move_req = MoveRequest(bottle.request.json)
+    data = bottle.request.json
+    board = Board(data['board'],data['you'])
 
-    return MoveResponse(move_req.do_move())
+    return MoveResponse(do_move(board))
 
 
 @bottle.post('/end')
