@@ -155,6 +155,7 @@ def do_move(board):
     # No path to food, attempt a safe alternative
     moves = board.gridNeighbours(board.me.head())
     if moves:
+        print("Making a random move")
         return dirToCoord(board.me.head(),random.choice(moves))
     else:
         print("No where safe to go. Womp womp :(")
