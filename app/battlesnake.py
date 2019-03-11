@@ -27,6 +27,40 @@ class Coord(object):
                 'obj': str(self.obj)
             })
 
+    # Comparison operators
+    def _is_valid_operand(self, other):
+        return (hasattr(other, "x") and
+                hasattr(other, "y"))
+
+    def __eq__(self, other):
+        if not self._is_valid_operand(other):
+            return NotImplemented
+        return ((self.x, self.y) == (other.x, other.y))
+
+    def __lt__(self, other):
+        if not self._is_valid_operand(other):
+            return NotImplemented
+        return ((self.x, self.y) < (other.x, other.y))
+
+    def __le__(self, other):
+        if not self._is_valid_operand(other):
+            return NotImplemented
+        return ((self.x, self.y) <= (other.x, other.y))
+
+    def __gt__(self, other):
+        if not self._is_valid_operand(other):
+            return NotImplemented
+        return ((self.x, self.y) > (other.x, other.y))
+
+    def __ge__(self, other):
+        if not self._is_valid_operand(other):
+            return NotImplemented
+        return ((self.x, self.y) >= (other.x, other.y))
+
+    def __hash__(self):
+        return hash((self.x, self.y))
+
+
 class Food(object):
     def __str__(self):
         return "F"
@@ -76,7 +110,7 @@ class Board(object):
         self.width = board['width']
         self.food = []
         self.snakes  = []
-        self.grid = [[Coord({'x':col,'y':row},None) for row in xrange(self.height)] for col in xrange(self.width)]
+        self.grid = [[Coord({'x':col,'y':row},None) for row in range(self.height)] for col in range(self.width)]
 
         for food_coord in board['food']:
             food = Coord(food_coord,Food())
@@ -133,10 +167,12 @@ class Board(object):
         results = filter(self.coordIsNotSnake, results)
         #print("Filtered again")
         #pprint(results)
-        return results
+        return list(results)
 
     def heuristic(self, coord):
         heur = 0
+        if len(self.food) == 0:
+            return 0
         for food in self.food:
             heur += abs(coord.x - food.x) + abs(coord.y - food.y)
         heur = heur / len(self.food)

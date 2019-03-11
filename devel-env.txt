@@ -1,0 +1,26 @@
+# Setting up a development environment
+
+I'm a CentOS guy myself, so here's what I did to get my CentOS 7 system ready for Python development.
+
+[How to Install Python 3 on CentOS 7](https://linuxize.com/post/how-to-install-python-3-on-centos-7/)
+
+As root:
+```bash
+# yum install centos-release-scl --yes
+# yum install rh-python36 --yes
+# yum groupinstall 'Development Tools' --yes
+```
+
+As user:
+```bash
+$ echo "source scl_source enable rh-python36" >> .bashrc
+$ python -m venv ~/venv
+$ source ~/venv/bin/activate
+$ pip install --upgrade pip
+$ pip install -r requirements.txt
+```
+
+Run snake
+```
+$ gunicorn app.main:application -c gunicorn.conf.py
+```

@@ -5,18 +5,17 @@ import sys
 # Debugger
 import pdb
 
-from api import *
+from .api import *
 from pprint import pprint
-from battlesnake import *
+from .battlesnake import *
 
 @bottle.route('/')
 def static():
-    return "<center><h1>Judgmental Shoelace</h1><img src=\"/static/snek.jpg\"/></center>"
+    return '<center><h1>Judgmental Shoelace</h1><img src="' + application.get_url('/static/<path:path>', path='snek.jpg') + '"/></center>'
 
 
-@bottle.route('/static/<path:path>')
+@bottle.route('/static/<path:path>', name='static')
 def static(path):
-    pprint (path)
     return bottle.static_file(path, root='static/')
 
 
@@ -57,6 +56,11 @@ application = bottle.default_app()
 if __name__ == '__main__':
     bottle.run(
         application,
-        host=os.getenv('IP', '0.0.0.0'),
-        port=os.getenv('PORT', '8080'),
+        #host=os.getenv('IP', '0.0.0.0'),
+        #port=os.getenv('PORT', '8080'),
+        #server='gunicorn',
+        #worker_class='gevent',
+        #workers=2,
+        #reload=True,
+        #accesslog='-',
         debug=True)
